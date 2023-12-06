@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  <h2>{{post.titulo}}</h2>
+{% endblock page_title %}
+
+{% block page_content %}
+   <small>
+   {{post.criado_em.date}} | Categorias:
+   {% for categoria in post.categorias.all %}
+      <a href="{% url 'blog_categoria' categoria.nome %}">
+          {{categoria.nome }}
+      </a>
+   {% endfor %}
+   </small>
+   <p>{{post.corpo | linebreaks}}</p>
+
+   <h3>Deixe um comentario:</h3>
+   <form method="post">
+      {% csrf_token %}
+      <div>
+         {{ form.autor }}
+      </div>
+      <br>
+      <div>
+         {{ form.corpo }}
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Enviar</button>
+   </form>
+
+   <h3>Comentarios:</h3>
+   {% for comentario in comentarios %}
+      <p>
+         Em {{ comentario.criado_em.date }} <b> {{ comentario.autor }} </b> escreveu:
+      </p>
+      <p>
+         {{ comentario.corpo | linebreaks}}
+      </p>
+   {% endfor %}
+{% endblock page_content %}
